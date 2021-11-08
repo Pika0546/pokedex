@@ -8,6 +8,7 @@ import './App.css';
 import Search from './components/Search/Search';
 import Loading from './components/Loading/Loading';
 import NotFound from './components/NotFound/NotFound';
+import ScrollToTopBtn from './components/ScrollToTopBtn/ScrollToTopBtn';
 // import PokeDetail from './components/PokeDetail/PokeDetail';
 
 const pokemonlUrl = "https://pokeapi.co/api/v2/pokemon/";
@@ -151,7 +152,7 @@ function App() {
 
 	return (
 		<div className="app">
-			
+			<ScrollToTopBtn></ScrollToTopBtn>
 			{state.isLoading ? 
 				<Loading className="big"></Loading> :
 				<>
