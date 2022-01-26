@@ -9,7 +9,10 @@ import Search from './components/Search/Search';
 import Loading from './components/Loading/Loading';
 import NotFound from './components/NotFound/NotFound';
 import ScrollToTopBtn from './components/ScrollToTopBtn/ScrollToTopBtn';
-// import PokeDetail from './components/PokeDetail/PokeDetail';
+import PokeDetail from './components/PokeDetail/PokeDetail';
+import Error from './components/Error/Error';
+/* ======== Router ======== */
+import { HashRouter, Route, Switch } from 'react-router-dom';
 
 const pokemonlUrl = "https://pokeapi.co/api/v2/pokemon/";
 const typesUrl = "https://pokeapi.co/api/v2/type/";
@@ -24,7 +27,6 @@ const initialState = {
 	isLoadMore: true,
 	isError: false,
 	isOpenPokedex: false,
-	pokeDetail: null,
 }
 
 function App() {
@@ -134,53 +136,47 @@ function App() {
 		}, 1000);
 	}
 
-	const showDetail = (pokemon)=>{
-		dispatch({type: "SET_DETAIL", payload: pokemon});
-	}
-
-	// const renderDetail = () =>{
-	// 	let pokeTypes = [];
-	// 	state.pokeDetail.types.forEach(item=>{
-	// 		state.types.forEach((type)=>{
-	// 			if(type.name === item){
-	// 				pokeTypes.push(type);
-	// 			}
-	// 		});
-	// 	});
-	// 	return <PokeDetail pokemon={state.pokeDetail} types={pokeTypes}></PokeDetail>
-	// }
-
 	return (
 		<div className="app">
-			<ScrollToTopBtn></ScrollToTopBtn>
-			{state.isLoading ? 
-				<Loading className="big"></Loading> :
-				<>
-					<Header></Header>
-					<Search getFilter={getFilter}></Search>
-					<main>
-						<div className="main">
-							{state.isSearching ?                     
-								<Loading className="small"></Loading> :
-								state.isError ?
-								<NotFound></NotFound> : 
-								<Dictionary
-									isOver={state.filterResult ? true : state.isOver} 
-									pokeList={state.filterResult ? state.filterResult : state.data} 
-									fetchData={fetchData}
-									isLoadMore={state.isLoadMore}
-									showDetail={showDetail}
-								></Dictionary>
-							}
-						</div>
-					</main>
-					{/* {
-						state.isOpenPokedex ?
-						renderDetail() :
-						""
-					} */}
-				</>
-			}
+			<HashRouter basename='/'>
+				<ScrollToTopBtn></ScrollToTopBtn>
+				<Switch>
+					<Route exact path="/">
+						{state.isLoading ? 
+							<Loading className="big"></Loading> :
+							<>
+								<Header></Header>
+								<Search getFilter={getFilter}></Search>
+								<main>
+									<div className="main">
+										{state.isSearching ?                     
+											<Loading className="small"></Loading> :
+											state.isError ?
+											<NotFound></NotFound> : 
+											<Dictionary
+												isOver={state.filterResult ? true : state.isOver} 
+												pokeList={state.filterResult ? state.filterResult : state.data} 
+												fetchData={fetchData}
+												isLoadMore={state.isLoadMore}
+											></Dictionary>
+										}
+									</div>
+								</main>
+							</>
+						}
+					</Route>
+					<Route exact path="/:id">
+						<PokeDetail></PokeDetail>
+					</Route>
+					<Route path="*">
+						<Header></Header>
+						<Error/>
+					</Route>
+				</Switch>
+				
+			</HashRouter>
+			
+			
 		</div>
 	);
 }

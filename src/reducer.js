@@ -56,13 +56,6 @@ export const reducer = (state, action) =>{
             isError: true,
         }
     }
-    else if(action.type === 'SET_DETAIL'){
-        return{
-            ...state,
-            isOpenPokedex: true,
-            pokeDetail: action.payload
-        }
-    }
     else{
         return {
             ...state

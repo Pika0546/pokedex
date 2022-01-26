@@ -3,7 +3,7 @@ import Card from '../Card/Card';
 import useInfiniteScroll from '../../hook/useInfiniteScroll';
 import './Dictionary.scss';
 import Loading from '../Loading/Loading';
-const Dictionary = ({pokeList, fetchData, isOver, isLoadMore, showDetail}) => {
+const Dictionary = ({pokeList, fetchData, isOver, isLoadMore}) => {
 
     const fetchMore = () => {
         if(!isOver){
@@ -15,7 +15,7 @@ const Dictionary = ({pokeList, fetchData, isOver, isLoadMore, showDetail}) => {
     const [isFetching, setIsFetching]  = useInfiniteScroll(fetchMore);
 
     const list = pokeList.map((pokemon)=>{
-        return <Card key={pokemon.id} showDetail={showDetail} pokemon={pokemon}></Card>
+        return <Card key={pokemon.id} pokemon={pokemon}></Card>
     });
     return (
         <div className="dictionary">
