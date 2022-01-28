@@ -12,7 +12,7 @@ import ScrollToTopBtn from './components/ScrollToTopBtn/ScrollToTopBtn';
 import PokeDetail from './components/PokeDetail/PokeDetail';
 import Error from './components/Error/Error';
 /* ======== Router ======== */
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 const pokemonlUrl = "https://pokeapi.co/api/v2/pokemon/";
 const typesUrl = "https://pokeapi.co/api/v2/type/";
@@ -20,12 +20,11 @@ const initialState = {
 	filterResult: null,
 	isLoading: true,
 	data: [],
-	types: [],
 	nextUrl: pokemonlUrl,
 	isOver: false,
 	isSearching: false,
 	isLoadMore: true,
-	isError: false,
+	isError: 1, //1 pokemon not found, 2 data error
 	isOpenPokedex: false,
 }
 
@@ -33,73 +32,33 @@ function App() {
 		
 	const [state, dispatch] = useReducer(reducer, initialState);
 
-	const fetchData = () =>{
+	const fetchData = async () =>{
 		if(!state.filterResult){
-			dispatch({type:"START_LOAD"});
-			axios.get(state.nextUrl)
-			.then(res=>{
+			try {
+				dispatch({type:"START_LOAD"});
+				const res = await axios.get(state.nextUrl);
 				const data = res.data;
 				const axiosList = data.results.map((item)=>{
 					return axios.get(item.url);
 				});
-
-				Promise.all(axiosList)
-				.then((results)=>{
-					let pokeList = results.map((item)=>{
-						let typeList = item.data.types.map((type)=>{
-							return type.type.name;
-						});
-						return{
-							id: item.data.id,
-							name: item.data.name,
-							types: typeList,
-							img: item.data.sprites.front_default,
-						}
+				const results = await Promise.all(axiosList)
+				let pokeList = results.map((item)=>{
+					let typeList = item.data.types.map((type)=>{
+						return type.type.name;
 					});
-					if(state.types.length === 0){
-						axios.get(typesUrl)
-						.then(res=>{
-							const data1 = res.data;
-							const axiosList1 = data1.results.map((item)=>{
-								return axios.get(item.url);
-							});
-							
-							Promise.all(axiosList1)
-							.then((result)=>{
-								let types = result.map((item)=>{
-									let dis = [];
-									let ad = [];
-									item.data.damage_relations.double_damage_from.forEach(type=>{
-										dis.push(type.name);
-									});
-									item.data.damage_relations.no_damage_to.forEach(type=>{
-										dis.push(type.name);
-									});
-									item.data.damage_relations.double_damage_to.forEach(type=>{
-										ad.push(type.name);
-									});
-									item.data.damage_relations.no_damage_from.forEach(type=>{
-										ad.push(type.name);
-									});
-									return{
-										name: item.data.name,
-										dis: dis,
-										ad: ad
-									}
-								});
-								dispatch({type:'FETCH_DATA', payload: {pokemons: pokeList, nextUrl: data.next, typeList: types}});
-							})
-						})
+					return{
+						id: item.data.id,
+						name: item.data.name,
+						types: typeList,
+						img: item.data.sprites.front_default,
 					}
-					else{
-						dispatch({type:'FETCH_DATA', payload: {pokemons: pokeList, nextUrl: data.next, typeList: state.types}});
-					}
-				})
-				.catch(err=>console.log(err));
-			}).catch(err=>console.log(err));
+				});
+				dispatch({type:'FETCH_DATA', payload: {pokemons: pokeList, nextUrl: data.next}});
+			} catch (error) {
+				console.log(error);
+			}
 		}
 	}
-
 	useEffect(() => {
 		fetchData();
 		return()=>{
@@ -107,15 +66,15 @@ function App() {
 		}
 	}, []);
 
-	const getFilter =(filter)=>{
+	const getFilter = (filter)=>{
 		dispatch({type:'SEARCHING'});
-		setTimeout(() => {
+		setTimeout(async() => {
 			if(filter.length === 0){
 				dispatch({type:'RESET_POKEMONS'});
 			}
 			else{
-				axios.get(pokemonlUrl + filter)
-				.then(res => {
+				try {
+					const res = await axios.get(pokemonlUrl + filter);
 					const data = res.data;
 					let typeList = data.types.map((type)=>{
 						return type.type.name;
@@ -126,15 +85,20 @@ function App() {
 						types: typeList,
 						img: data.sprites.front_default,
 					}
-					dispatch({type:'FILTERING', payload: pokemon});
-		
-				})
-				.catch(err=>{
-					dispatch({type:"NOT_FOUND"})
-				})
+				dispatch({type:'FILTERING', payload: pokemon});
+				} catch (error) {
+					dispatch({type:"NOT_FOUND"});
+				}
 			}
 		}, 1000);
 	}
+	if(state.isLoading){
+		return <Loading className="big"></Loading>
+	}
+	if(state.isError === 2){
+		return <Redirect to="/error/404"></Redirect>
+	}
+	
 
 	return (
 		<div className="app">
@@ -142,28 +106,23 @@ function App() {
 				<ScrollToTopBtn></ScrollToTopBtn>
 				<Switch>
 					<Route exact path="/">
-						{state.isLoading ? 
-							<Loading className="big"></Loading> :
-							<>
-								<Header></Header>
-								<Search getFilter={getFilter}></Search>
-								<main>
-									<div className="main">
-										{state.isSearching ?                     
-											<Loading className="small"></Loading> :
-											state.isError ?
-											<NotFound></NotFound> : 
-											<Dictionary
-												isOver={state.filterResult ? true : state.isOver} 
-												pokeList={state.filterResult ? state.filterResult : state.data} 
-												fetchData={fetchData}
-												isLoadMore={state.isLoadMore}
-											></Dictionary>
-										}
-									</div>
-								</main>
-							</>
-						}
+						<Header></Header>
+						<Search getFilter={getFilter}></Search>
+						<main>
+							<div className="main">
+								{state.isSearching ?                     
+									<Loading className="small"></Loading> :
+									state.isError === 1 ?
+									<NotFound></NotFound> :
+									<Dictionary
+										isOver={state.filterResult ? true : state.isOver} 
+										pokeList={state.filterResult ? state.filterResult : state.data} 
+										fetchData={fetchData}
+										isLoadMore={state.isLoadMore}
+									></Dictionary>
+								}
+							</div>
+						</main>
 					</Route>
 					<Route exact path="/:id">
 						<PokeDetail></PokeDetail>

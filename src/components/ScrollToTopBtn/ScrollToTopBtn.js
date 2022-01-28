@@ -27,7 +27,7 @@ const ScrollToTopBtn = () => {
       <>
          {isDisplay ?  
             <button className="scroll-top" onClick={scrollTop}>
-                <i class="fas fa-angle-double-up"></i>
+                <i className="fas fa-angle-double-up"></i>
             </button> : ""
         }
       </>

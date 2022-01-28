@@ -14,7 +14,6 @@ export const reducer = (state, action) =>{
             isOver: isOver,
             isError: false,
             isLoadMore: false,
-            types: action.payload.typeList
         }
     }
     else if(action.type === 'RESET_POKEMONS'){
