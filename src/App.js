@@ -103,7 +103,7 @@ function App() {
 	return (
 		<div className="app">
 			<HashRouter basename='/'>
-				<ScrollToTopBtn></ScrollToTopBtn>
+				{/* <ScrollToTopBtn></ScrollToTopBtn> */}
 				<Switch>
 					<Route exact path="/">
 						<Header></Header>

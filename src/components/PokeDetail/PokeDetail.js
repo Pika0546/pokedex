@@ -15,12 +15,13 @@ const PokeDetail = () => {
         dis: [],
         ad: [],
         types: [],
-        images: [],
+        imgDefault: "",
+        imgFemale: "",
         height: 0,
         weight: 0 
     });
     const [status, setStatus] = useState("loading");
-    
+    const [gender, setGender] = useState(0);
     const renderDis = (diss) => {
         let badge = []
         diss.forEach((dis, index2)=>{
@@ -42,6 +43,13 @@ const PokeDetail = () => {
             return <Badge key={index} type={type.name}></Badge>
         });
     }
+
+    const genderChange = (e) =>{
+        console.log(parseInt(e.target.value));
+        setGender(parseInt(e.target.value));
+    }
+
+    const convertSize = s => s/10;
 
     useEffect(()=>{
         async function fetchData(){
@@ -96,9 +104,10 @@ const PokeDetail = () => {
                     types: types,
                     dis:  Array.from(new Set(dis)),
                     ad:  Array.from(new Set(ad)),
-                    images: data.data.sprites,
+                    imgDefault: data.data.sprites.front_default,
+                    imgFemale: data.data.sprites.front_female,
                     height: data.data.height,
-                    weight: data.data.height 
+                    weight: data.data.weight 
                 });
                 setStatus("done");
             } catch (error) {
@@ -122,49 +131,50 @@ const PokeDetail = () => {
         return (
             <>
                 <Header></Header>
-                <div className="pokedex">
-                    <div className="pokedex__screen">
-                        <div className="left">
-                            <div className="id">
-                                <h1>
-                                    {pokemon.id}
-                                </h1>
+                <main>
+                    <div className='main' style={{padding: 0}}>
+                        <div className='pokedetail'>
+                            <div className='pokedetail__name'>
+                                <h1>{pokemon.name}<span>#{pokemon.id}</span></h1>
+                                {pokemon.imgFemale ? 
+                                    <select  
+                                        defaultValue={0}
+                                        onChange={genderChange}
+                                    >
+                                        <option value={0}>Male</option>
+                                        <option value={1}>Female</option>
+                                    </select> : ""
+                                }
                             </div>
-                            <div className="name">
-                                <h1>
-                                    {pokemon.name}
-                                </h1>
-                            </div>
-                            <div className="type">
-                                {renderType(pokemon.types)}
-                            </div>
-                        </div>
-                        <div className="mid">
-                            <img src={pokemon.images.front_default} alt={pokemon.name}></img>
-                        </div>
-                        <div className="right">
-                            <div className="type-relate">
-                                <h3>
-                                    Advantage
-                                </h3>
-                                <div className="type-relate__list">
-                                    {renderDis(pokemon.ad)}
+                            
+                            <div className='pokedetail__info'>
+                                <div className='avatar'>
+                                    <img 
+                                        alt={pokemon.name}
+                                        src={gender ? pokemon.imgFemale : pokemon.imgDefault}
+                                    />
+                                </div>
+                                <div className='info'>
+                                    <div className='info__size'>
+                                        <h3>Weight: <span>{convertSize(pokemon.weight)}kg</span></h3>
+                                        <h3>Height: <span>{convertSize(pokemon.height)}m</span></h3>
+                                    </div>
+                                    <div className='info__type'>
+                                        <h3>Type: </h3> {renderType(pokemon.types)}
+                                    </div>
                                 </div>
                             </div>
-                            <div className="type-relate">
-                                <h3>
-                                    Disadvantage
-                                </h3>
-                                <div className="type-relate__list">
-                                    {renderAd(pokemon.dis)}
+                            <div className='type-relation'>
+                                <div className='type-relation__col'>
+                                    <h3>Advantage: </h3> {renderAd(pokemon.ad)}
+                                </div>
+                                <div className='type-relation__col'>
+                                    <h3>Disavantage: </h3> {renderDis(pokemon.dis)}
                                 </div>
                             </div>
                         </div>
-                        <button>
-                            &times;
-                        </button>
                     </div>
-                </div> 
+                </main>
             </>
            
         )

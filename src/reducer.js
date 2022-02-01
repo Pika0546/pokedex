@@ -52,7 +52,7 @@ export const reducer = (state, action) =>{
             ...state,
             filterResult: [],
             isSearching: false,
-            isError: true,
+            isError: 1,
         }
     }
     else{
