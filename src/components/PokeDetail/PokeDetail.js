@@ -56,6 +56,11 @@ const PokeDetail = () => {
             try {
                 const data = await axios.get("https://pokeapi.co/api/v2/pokemon/" + id);
                 const n = data.data.types.length;
+                // const speciesUrl = data.data.species.url;
+                // const speciesData = await axios.get(speciesUrl);
+                // console.log(speciesData);
+                // const evolutionChainData = await axios.get(speciesData.data.evolution_chain.url);
+                // console.log(evolutionChainData.data.chain);
                 const types = [];
                 let dis = [];
                 let ad = [];
@@ -75,7 +80,6 @@ const PokeDetail = () => {
                     });
                     types.push(data.data.types[i].type);
                 }
-                console.log(types);
                 for(let i = dis.length -1 ; i >= 0; i--){
                     for(let j = ad.length - 1; j >= 0; j--){
                         if(dis[i] === ad[j]){
@@ -160,23 +164,20 @@ const PokeDetail = () => {
                                         <h3>Height: <span>{convertSize(pokemon.height)}m</span></h3>
                                     </div>
                                     <div className='info__type'>
-                                        <h3>Type: </h3> {renderType(pokemon.types)}
+                                        <h3>Type: </h3>  {renderType(pokemon.types)}
                                     </div>
-                                </div>
-                            </div>
-                            <div className='type-relation'>
-                                <div className='type-relation__col'>
-                                    <h3>Advantage: </h3> {renderAd(pokemon.ad)}
-                                </div>
-                                <div className='type-relation__col'>
-                                    <h3>Disavantage: </h3> {renderDis(pokemon.dis)}
+                                    <div className='info__type'>
+                                        <h3>Advantage: </h3> {renderAd(pokemon.ad)}
+                                    </div>
+                                    <div className='info__type'>
+                                        <h3>Disavantage: </h3> {renderDis(pokemon.dis)}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </main>
             </>
-           
         )
     }
 }

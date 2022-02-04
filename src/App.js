@@ -15,7 +15,7 @@ import Error from './components/Error/Error';
 import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 const pokemonlUrl = "https://pokeapi.co/api/v2/pokemon/";
-const typesUrl = "https://pokeapi.co/api/v2/type/";
+// const typesUrl = "https://pokeapi.co/api/v2/type/";
 const initialState = {
 	filterResult: null,
 	isLoading: true,
@@ -103,7 +103,7 @@ function App() {
 	return (
 		<div className="app">
 			<HashRouter basename='/'>
-				{/* <ScrollToTopBtn></ScrollToTopBtn> */}
+				<ScrollToTopBtn></ScrollToTopBtn>
 				<Switch>
 					<Route exact path="/">
 						<Header></Header>

@@ -6,8 +6,9 @@
     padding: 2rem 1rem;
     &__name{
         text-align: center;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
         h1{
+            font-size: 3rem;
             text-transform: capitalize;
             span{
                 margin-left: 1rem;
@@ -28,18 +29,22 @@
     &__info{
         display: flex;
         justify-content: center;
-        
+        flex-wrap: wrap;
         .avatar{
             margin-right: 2rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            width: 100px;
-            
+            width: 250px;
         }
+    }
+}
 
-        .info{
-
+@media screen and (max-width: 767px){
+    .pokedetail{
+        &__info{
+           
+           text-align: center;
         }
     }
 }
