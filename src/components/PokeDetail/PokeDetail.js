@@ -22,6 +22,7 @@ const PokeDetail = () => {
     });
     const [status, setStatus] = useState("loading");
     const [gender, setGender] = useState(0);
+    const [chain, setChain] = useState([]);
     const renderDis = (diss) => {
         let badge = []
         diss.forEach((dis, index2)=>{
@@ -51,16 +52,40 @@ const PokeDetail = () => {
 
     const convertSize = s => s/10;
 
+    const getPokemon = async (name)  =>{
+        const res = await axios.get("https://pokeapi.co/api/v2/pokemon/" + name);
+        const data = {
+            id:res.data.id,
+            name:res.data.name,
+            img: res.data.sprites.front_default,
+            types: res.data.types.map((type)=>{
+                return type.type.name;
+            })
+        };
+        return data;
+    }
+
     useEffect(()=>{
         async function fetchData(){
             try {
                 const data = await axios.get("https://pokeapi.co/api/v2/pokemon/" + id);
                 const n = data.data.types.length;
-                // const speciesUrl = data.data.species.url;
-                // const speciesData = await axios.get(speciesUrl);
-                // console.log(speciesData);
-                // const evolutionChainData = await axios.get(speciesData.data.evolution_chain.url);
-                // console.log(evolutionChainData.data.chain);
+                const speciesUrl = data.data.species.url;
+                const speciesData = await axios.get(speciesUrl);
+                const evolutionChainData = await axios.get(speciesData.data.evolution_chain.url);
+                const lv1 = await getPokemon(evolutionChainData.data.chain.species.name);
+                const lv2Array = evolutionChainData.data.chain.evolves_to;
+                lv1.lv2 = [];
+                lv2Array.forEach( async (item) => {
+                    const lv2Pokemon = await getPokemon(item.species.name);
+                    const lv3Array = item.evolves_to;
+                    lv2Pokemon.lv3 = [];
+                    lv3Array.forEach(async (poke) => {
+                        const lv3Pokemon = await getPokemon(poke.species.name);
+                        lv2Pokemon.lv3.push(lv3Pokemon);
+                    });
+                    lv1.lv2.push(lv2Pokemon);
+                });
                 const types = [];
                 let dis = [];
                 let ad = [];
@@ -113,6 +138,7 @@ const PokeDetail = () => {
                     height: data.data.height,
                     weight: data.data.weight 
                 });
+                setChain(lv1);
                 setStatus("done");
             } catch (error) {
                 console.log(error);

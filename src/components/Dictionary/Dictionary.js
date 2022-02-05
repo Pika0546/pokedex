@@ -1,5 +1,6 @@
 import React from 'react';
 import Card from '../Card/Card';
+
 import useInfiniteScroll from '../../hook/useInfiniteScroll';
 import './Dictionary.scss';
 import Loading from '../Loading/Loading';
@@ -11,7 +12,7 @@ const Dictionary = ({pokeList, fetchData, isOver, isLoadMore}) => {
         }
         setIsFetching(false);
     }
-    
+
     const [isFetching, setIsFetching]  = useInfiniteScroll(fetchMore);
 
     const list = pokeList.map((pokemon)=>{

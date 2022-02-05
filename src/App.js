@@ -103,10 +103,10 @@ function App() {
 	return (
 		<div className="app">
 			<HashRouter basename='/'>
-				<ScrollToTopBtn></ScrollToTopBtn>
 				<Switch>
-					<Route exact path="/">
+					<Route exact path="/" >
 						<Header></Header>
+						<ScrollToTopBtn></ScrollToTopBtn>
 						<Search getFilter={getFilter}></Search>
 						<main>
 							<div className="main">
