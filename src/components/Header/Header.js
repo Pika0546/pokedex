@@ -3,7 +3,6 @@ import './Header.scss';
 import pokemonBrand from '../../assets/pokemon.png';
 // import { Link } from 'react-router-dom';
 const Header = () => {
-    console.log("ha")
     return (
         <a href='/pokedex'>
             <div className="header">

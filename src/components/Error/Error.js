@@ -15,11 +15,11 @@ const Error = () => {
                 <p>You look lost on your journey!</p>
             </div>
             <div className='error__btn'>
-                <Link to='/'>
+                <a href='/pokedex'>
                     <button className="btn">
                         <i className="fas fa-long-arrow-alt-left"></i>Go back home
                     </button>
-                </Link>
+                </a>
             </div>
         </div>
     )

@@ -6,6 +6,7 @@ import {useState, useEffect} from 'react';
 import Loading from '../Loading/Loading';
 import Header from '../Header/Header';
 import axios from 'axios';
+import Card from '../Card/Card';
 import { Redirect  } from "react-router-dom";
 const PokeDetail = () => {
     let {id} = useParams();
@@ -46,7 +47,6 @@ const PokeDetail = () => {
     }
 
     const genderChange = (e) =>{
-        console.log(parseInt(e.target.value));
         setGender(parseInt(e.target.value));
     }
 
@@ -66,6 +66,7 @@ const PokeDetail = () => {
     }
 
     useEffect(()=>{
+        setStatus("loading");
         async function fetchData(){
             try {
                 const data = await axios.get("https://pokeapi.co/api/v2/pokemon/" + id);
@@ -149,8 +150,42 @@ const PokeDetail = () => {
         return()=>{
 			//do not thing
 		}
-    }, [])
+    }, [id]);
 
+    const renderChain = () =>{
+        let id = 0;
+        const result = [];
+        result.push(<Card key={id++} pokemon={chain}></Card>);
+        if(chain.lv2.length <= 0){
+            return result;
+        }
+        result.push(<i key={id++} className="fas fa-chevron-right"></i>);
+        const lv2Array = [];
+        const lv3Array = [];
+        chain.lv2.forEach(pokelv2=>{
+            lv2Array.push((<Card key={id++} pokemon={pokelv2}></Card>));
+            if( pokelv2.lv3.length > 0){
+                pokelv2.lv3.forEach(pokeLv3=>{
+                    lv3Array.push(<Card key={id++} pokemon={pokeLv3}></Card>);
+                });
+            }
+        });
+        result.push((
+            <div key={id++} className='chain__col'>
+                {lv2Array}
+            </div>)
+        );
+        if(lv3Array.length > 0){
+            result.push(<i key={id++} className="fas fa-chevron-right"></i>);
+            result.push((
+                <div key={id++} className='chain__col'>
+                    {lv3Array}
+                </div>)
+            );
+        }
+        
+        return result;  
+    }
     if(status === "error"){
         return <Redirect to="/error/404"></Redirect>
     }
@@ -176,7 +211,6 @@ const PokeDetail = () => {
                                     </select> : ""
                                 }
                             </div>
-                            
                             <div className='pokedetail__info'>
                                 <div className='avatar'>
                                     <img 
@@ -199,6 +233,11 @@ const PokeDetail = () => {
                                         <h3>Disavantage: </h3> {renderDis(pokemon.dis)}
                                     </div>
                                 </div>
+                            </div>
+                            <h1 className='chain-header'>Evolutions</h1>
+                            <div className='chain'>
+                                
+                                {renderChain()}
                             </div>
                         </div>
                     </div>

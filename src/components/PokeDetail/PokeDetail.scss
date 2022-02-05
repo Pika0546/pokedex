@@ -31,20 +31,81 @@
         justify-content: center;
         flex-wrap: wrap;
         .avatar{
-            margin-right: 2rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            width: 250px;
+            width: 200px;
+        }
+    }
+    .chain-header{
+        margin: 2rem 0;
+        margin-bottom: .5rem;
+        text-align: center;
+    }
+    .chain{
+        border-radius: .5rem;
+        background-image: linear-gradient(45deg, #2f2f2f 25%, #323232 25%, #323232 50%, #2f2f2f 50%, #2f2f2f 75%, #323232 75%, #323232 100%);
+        background-size: 70.71px 70.71px;
+        padding: 2rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        i{
+            color: white;
+            font-size: 2rem;
+        }
+        &__col{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-between;
+           
+        }
+        &__col{
+            a{
+                margin-top: 1rem;
+            }
+        }
+        .card{
+            border-radius: .5rem;
         }
     }
 }
 
 @media screen and (max-width: 767px){
     .pokedetail{
+        &__name{
+            h1{
+                font-size: 2rem;
+            }
+        }
         &__info{
            
            text-align: center;
+        }
+    }
+}
+
+@media screen and (max-width: 430px){
+    .pokedetail{
+        &__name{
+            h1{
+                font-size: 1.5rem;
+            }
+        }
+        &__info{
+            .avatar{
+                width: 100px;
+            }
+        }
+        .chain-header{
+            text-align: center;
+            font-size: 1.5rem;
+        }
+        .chain{
+            padding: 1rem;
         }
     }
 }
