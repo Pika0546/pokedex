@@ -5,7 +5,7 @@ import pokemonBrand from '../../assets/pokemon.png';
 const Header = () => {
     console.log("ha")
     return (
-        <a href='/'>
+        <a href='/pokedex'>
             <div className="header">
                 <img 
                     src={pokemonBrand} 
