@@ -51,25 +51,61 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        flex-wrap: wrap;
+        .card{
+            min-width: 150px;
+            max-width: 150px;
+        }
         i{
             color: white;
             font-size: 2rem;
-        }
-        &__col{
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            justify-content: space-between;
-           
+            &:last-child{
+                display: none;
+            }
         }
         &__col{
             a{
                 margin-top: 1rem;
             }
+            display: grid;
+            gap: 1rem;
         }
         .card{
             border-radius: .5rem;
+        }
+    }
+}
+@media screen and (max-width: 1170px){
+    .pokedetail{
+        &__name{
+            h1{
+                font-size: 2rem;
+            }
+        }
+        &__info{
+           
+           text-align: center;
+        }
+        .chain{
+            flex-direction: column;
+            i{
+                display: none;
+                &:last-child{
+                    margin-top: 1rem;
+                    display: block;
+                }
+            }
+            &__col{
+                a{
+                    margin-top: 1rem;
+                }
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+            .card{
+                border-radius: .5rem;
+            }
         }
     }
 }

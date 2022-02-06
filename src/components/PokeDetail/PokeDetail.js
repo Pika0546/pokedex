@@ -77,16 +77,26 @@ const PokeDetail = () => {
                 const lv1 = await getPokemon(evolutionChainData.data.chain.species.name);
                 const lv2Array = evolutionChainData.data.chain.evolves_to;
                 lv1.lv2 = [];
-                lv2Array.forEach( async (item) => {
-                    const lv2Pokemon = await getPokemon(item.species.name);
-                    const lv3Array = item.evolves_to;
+                for(let i = 0 ; i < lv2Array.length ; i++){
+                    const lv2Pokemon = await getPokemon(lv2Array[i].species.name);
+                    const lv3Array = lv2Array[i].evolves_to;
                     lv2Pokemon.lv3 = [];
-                    lv3Array.forEach(async (poke) => {
-                        const lv3Pokemon = await getPokemon(poke.species.name);
+                    for(let j = 0; j < lv3Array.length; j++){
+                        const lv3Pokemon = await getPokemon(lv3Array[j].species.name);
                         lv2Pokemon.lv3.push(lv3Pokemon);
-                    });
+                    }
                     lv1.lv2.push(lv2Pokemon);
-                });
+                }
+                // lv2Array.forEach( async (item) => {
+                //     const lv2Pokemon = await getPokemon(item.species.name);
+                //     const lv3Array = item.evolves_to;
+                //     lv2Pokemon.lv3 = [];
+                //     lv3Array.forEach(async (poke) => {
+                //         const lv3Pokemon = await getPokemon(poke.species.name);
+                //         lv2Pokemon.lv3.push(lv3Pokemon);
+                //     });
+                //     lv1.lv2.push(lv2Pokemon);
+                // });
                 const types = [];
                 let dis = [];
                 let ad = [];
@@ -142,7 +152,6 @@ const PokeDetail = () => {
                 setChain(lv1);
                 setStatus("done");
             } catch (error) {
-                console.log(error);
                 setStatus("error");
             }
         }
@@ -159,26 +168,30 @@ const PokeDetail = () => {
         if(chain.lv2.length <= 0){
             return result;
         }
-        result.push(<i key={id++} className="fas fa-chevron-right"></i>);
+        result.push(<span key={id++}><i key={id++} className="fas fa-chevron-right"></i><i key={id++} className="fas fa-angle-down"></i></span>);
         const lv2Array = [];
         const lv3Array = [];
         chain.lv2.forEach(pokelv2=>{
             lv2Array.push((<Card key={id++} pokemon={pokelv2}></Card>));
-            if( pokelv2.lv3.length > 0){
-                pokelv2.lv3.forEach(pokeLv3=>{
-                    lv3Array.push(<Card key={id++} pokemon={pokeLv3}></Card>);
-                });
-            }
+            pokelv2.lv3.forEach(pokeLv3=>{  
+                lv3Array.push(<Card key={id++} pokemon={pokeLv3}></Card>);
+            });
         });
+        const style = {
+            gridTemplateColumns: `repeat(${lv2Array.length > 4 ? 4 : lv2Array.length}, 1fr)`
+        }
         result.push((
-            <div key={id++} className='chain__col'>
+            <div key={id++} className='chain__col' style={style}>
                 {lv2Array}
             </div>)
         );
         if(lv3Array.length > 0){
-            result.push(<i key={id++} className="fas fa-chevron-right"></i>);
+            result.push(<span key={id++}><i key={id++} className="fas fa-chevron-right"></i><i key={id++} className="fas fa-angle-down"></i></span>);
+            const style = {
+                gridTemplateColumns: `repeat(${lv3Array.length > 4 ? 4 : lv3Array.length}, 1fr)`
+            }
             result.push((
-                <div key={id++} className='chain__col'>
+                <div key={id++} className='chain__col' style={style}>
                     {lv3Array}
                 </div>)
             );
