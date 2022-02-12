@@ -41,6 +41,7 @@ function App() {
 				const axiosList = data.results.map((item)=>{
 					return axios.get(item.url);
 				});
+				
 				const results = await Promise.all(axiosList)
 				let pokeList = results.map((item)=>{
 					let typeList = item.data.types.map((type)=>{
@@ -92,6 +93,7 @@ function App() {
 			}
 		}, 1000);
 	}
+
 	if(state.isLoading){
 		return <Loading className="big"></Loading>
 	}
@@ -105,6 +107,7 @@ function App() {
 			<HashRouter basename='/'>
 				<Switch>
 					<Route exact path="/" >
+						{/* {window.location.reload()} */}
 						<Header></Header>
 						<ScrollToTopBtn></ScrollToTopBtn>
 						<Search getFilter={getFilter}></Search>

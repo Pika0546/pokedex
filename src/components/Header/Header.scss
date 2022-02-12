@@ -2,10 +2,14 @@
     position: relative;
    
     padding: 3rem;
+    display: flex;
+    justify-content: center;
+    a{
+        width: 35%;
+    }
     img{
         display: block;
-        margin: 0 auto;
-        width: 35%;
+        width: 100%;
         height: auto;
         cursor: pointer;
     }
@@ -13,7 +17,7 @@
 
 @media screen and (max-width: 576px){
     .header{
-        img{
+        a{
             width: 80%;
         }
     }
