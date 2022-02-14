@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/pokedex/static/css/main.bcbf098f.chunk.css",
+    "main.css": "/pokedex/static/css/main.f2c3cd9a.chunk.css",
     "main.js": "/pokedex/static/js/main.9db51db3.chunk.js",
     "main.js.map": "/pokedex/static/js/main.9db51db3.chunk.js.map",
     "runtime-main.js": "/pokedex/static/js/runtime-main.5d043ac8.js",
@@ -8,7 +8,7 @@
     "static/js/2.85fdb630.chunk.js": "/pokedex/static/js/2.85fdb630.chunk.js",
     "static/js/2.85fdb630.chunk.js.map": "/pokedex/static/js/2.85fdb630.chunk.js.map",
     "index.html": "/pokedex/index.html",
-    "static/css/main.bcbf098f.chunk.css.map": "/pokedex/static/css/main.bcbf098f.chunk.css.map",
+    "static/css/main.f2c3cd9a.chunk.css.map": "/pokedex/static/css/main.f2c3cd9a.chunk.css.map",
     "static/js/2.85fdb630.chunk.js.LICENSE.txt": "/pokedex/static/js/2.85fdb630.chunk.js.LICENSE.txt",
     "static/media/pokeball404.de8d4812.png": "/pokedex/static/media/pokeball404.de8d4812.png",
     "static/media/pokeballOpen.1dac896f.png": "/pokedex/static/media/pokeballOpen.1dac896f.png",
@@ -17,7 +17,7 @@
   "entrypoints": [
     "static/js/runtime-main.5d043ac8.js",
     "static/js/2.85fdb630.chunk.js",
-    "static/css/main.bcbf098f.chunk.css",
+    "static/css/main.f2c3cd9a.chunk.css",
     "static/js/main.9db51db3.chunk.js"
   ]
 }
