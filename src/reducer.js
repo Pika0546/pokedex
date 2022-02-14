@@ -55,6 +55,13 @@ export const reducer = (state, action) =>{
             isError: 1,
         }
     }
+    else if(action.type === 'ERROR'){
+        return{
+            ...state,
+            isLoading: false,
+            isError: -1
+        }
+    }
     else{
         return {
             ...state

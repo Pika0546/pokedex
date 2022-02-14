@@ -4,7 +4,6 @@ import Badge from '../Badge/Badge';
 import { useParams } from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import Loading from '../Loading/Loading';
-import Header from '../Header/Header';
 import axios from 'axios';
 import Card from '../Card/Card';
 import { Redirect  } from "react-router-dom";
@@ -208,7 +207,6 @@ const PokeDetail = () => {
     else{
         return (
             <>
-                <Header></Header>
                 <main>
                     <div className='main' style={{padding: 0}}>
                         <div className='pokedetail'>

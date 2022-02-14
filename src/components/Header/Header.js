@@ -5,12 +5,12 @@ import { Link } from 'react-router-dom';
 const Header = () => {
     return (
         <div className="header">
-            <a href='/pokedex'>
+            <Link to="/reload">
                 <img 
                     src={pokemonBrand} 
                     alt="Pokemon"
                 ></img>
-            </a>
+            </Link>
         </div>
     )
 }

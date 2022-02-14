@@ -13,7 +13,7 @@ const Dictionary = ({pokeList, fetchData, isOver, isLoadMore}) => {
         setIsFetching(false);
     }
 
-    const [isFetching, setIsFetching]  = useInfiniteScroll(fetchMore);
+    const [, setIsFetching]  = useInfiniteScroll(fetchMore);
 
     const list = pokeList.map((pokemon)=>{
         return <Card key={pokemon.id} pokemon={pokemon}></Card>
@@ -28,9 +28,7 @@ const Dictionary = ({pokeList, fetchData, isOver, isLoadMore}) => {
                     <Loading className="small"></Loading> : ""
                 }
             </div>
-
         </div>
-
     )
 }
 
